@@ -1,0 +1,27 @@
+package com.campus.volunteer.entity;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+/** 站内通知 */
+@Data
+@TableName("notice")
+public class Notice {
+
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
+    private Long userId;
+
+    private String title;
+
+    private String content;
+
+    private Integer readFlag;
+
+    private LocalDateTime createTime;
+}

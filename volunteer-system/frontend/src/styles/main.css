@@ -1,0 +1,636 @@
+/* =========================================================
+   设计 token —— 与登录页同源，内容页统一引用
+   ========================================================= */
+:root {
+  /* 背景 / 品牌色 */
+  --sys-bg-a: #f8fafc;
+  --sys-bg-b: #ffffff;
+  --sys-bg-deep: #f1f5f9;
+  --sys-primary: #3b82f6;
+  --sys-primary-deep: #2563eb;
+  --sys-cyan: #0891b2;
+  --sys-accent: #f59e0b;
+
+  /* 语义色 */
+  --sys-success: #10b981;
+  --sys-warning: #f59e0b;
+  --sys-danger: #ef4444;
+
+  /* 文字（对比度均 ≥ 4.5:1） */
+  --sys-text: #1f2937;
+  --sys-text-sub: #6b7280;
+  --sys-text-muted: #9ca3af;
+
+  /* 表面 / 边框 */
+  --sys-card: #ffffff;
+  --sys-card-hover: #f8fafc;
+  --sys-panel: #ffffff;
+  --sys-border: #e5e7eb;
+  --sys-border-strong: #d1d5db;
+
+  /* 圆角 / 阴影 / 缓动 */
+  --sys-radius-lg: 16px;
+  --sys-radius: 12px;
+  --sys-radius-sm: 10px;
+  --sys-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --sys-shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --sys-glow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  --sys-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- 兼容旧变量名 ---- */
+  --brand: #3b82f6;
+  --brand-light: rgba(59, 130, 246, 0.12);
+  --brand-2: #0891b2;
+  --text-main: #1f2937;
+  --text-sub: #6b7280;
+  --text-muted: #9ca3af;
+  --border: #e5e7eb;
+  --bg-page: #f8fafc;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--sys-bg-a);
+  color: var(--sys-text);
+  font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Helvetica,
+    "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--sys-cyan);
+  text-decoration: none;
+}
+
+/* =========================================================
+   Element Plus 变量（浅色主题，对齐品牌色）
+   ========================================================= */
+html {
+  --el-color-primary: #3b82f6;
+  --el-color-primary-light-3: #60a5fa;
+  --el-color-primary-light-5: #93c5fd;
+  --el-color-primary-light-7: rgba(59, 130, 246, 0.28);
+  --el-color-primary-light-8: rgba(59, 130, 246, 0.18);
+  --el-color-primary-light-9: rgba(59, 130, 246, 0.1);
+  --el-color-primary-dark-2: #2563eb;
+
+  --el-color-success: #10b981;
+  --el-color-warning: #f59e0b;
+  --el-color-danger: #ef4444;
+  --el-color-error: #ef4444;
+  --el-color-info: #6b7280;
+
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f8fafc;
+  --el-bg-color-overlay: #ffffff;
+  --el-text-color-primary: #1f2937;
+  --el-text-color-regular: #374151;
+  --el-text-color-secondary: #6b7280;
+  --el-text-color-placeholder: #9ca3af;
+  --el-text-color-disabled: #d1d5db;
+
+  --el-border-color: #e5e7eb;
+  --el-border-color-light: #e5e7eb;
+  --el-border-color-lighter: #f3f4f6;
+  --el-border-color-extra-light: #f9fafb;
+
+  --el-fill-color: #f3f4f6;
+  --el-fill-color-light: #f9fafb;
+  --el-fill-color-lighter: #fafafa;
+  --el-fill-color-blank: #ffffff;
+
+  --el-mask-color: rgba(15, 23, 42, 0.45);
+  --el-border-radius-base: 10px;
+  --el-border-radius-small: 8px;
+}
+
+/* =========================================================
+   页面通用结构
+   ========================================================= */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--sys-text);
+  letter-spacing: 0.5px;
+}
+
+.page-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--sys-text-sub);
+}
+
+/* ---------- 卡片（.card 与 .sys-card 等价） ---------- */
+.card,
+.sys-card {
+  position: relative;
+  background: var(--sys-card);
+  border: 1px solid var(--sys-border);
+  border-radius: var(--sys-radius-lg);
+  padding: 20px 22px;
+  box-shadow: var(--sys-shadow-sm);
+  overflow: hidden;
+  transition: transform 0.3s var(--sys-ease), border-color 0.3s ease,
+    box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* 卡片 hover：上浮 + 边框高亮 */
+.card:hover,
+.sys-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--sys-primary);
+  box-shadow: 0 12px 28px rgba(59, 130, 246, 0.12);
+}
+
+/* 流光边框：渐变遮罩只在 hover 时显现 */
+.sys-card--flow::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(59, 130, 246, 0.75) 45%,
+    rgba(6, 182, 212, 0.75) 55%,
+    transparent 80%
+  );
+  background-size: 220% 100%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: sys-border-flow 3.2s linear infinite;
+  pointer-events: none;
+}
+
+.sys-card--flow:hover::after {
+  opacity: 1;
+}
+
+/* =========================================================
+   关键操作按钮：沿用登录页的渐变 + 扫光 + 悬浮外发光
+   ========================================================= */
+.sys-btn-primary {
+  position: relative;
+  overflow: hidden;
+  border: none !important;
+  background: linear-gradient(120deg, #3b82f6 0%, #06b6d4 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.sys-btn-primary::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -60%;
+  width: 45%;
+  height: 140%;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: sys-btn-shine 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.sys-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(59, 130, 246, 0.45), 0 0 0 3px rgba(59, 130, 246, 0.16);
+}
+
+.sys-btn-primary:active {
+  transform: translateY(0);
+}
+
+@keyframes sys-btn-shine {
+  0% {
+    left: -60%;
+  }
+  55%,
+  100% {
+    left: 130%;
+  }
+}
+
+/* =========================================================
+   骨架屏（浅色）
+   ========================================================= */
+.sys-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.sys-skeleton-row {
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.04) 25%,
+    rgba(15, 23, 42, 0.09) 37%,
+    rgba(15, 23, 42, 0.04) 63%
+  );
+  background-size: 400% 100%;
+  animation: sys-skeleton 1.4s ease-in-out infinite;
+}
+
+.sys-skeleton-row:nth-child(2) {
+  width: 86%;
+}
+
+.sys-skeleton-row:nth-child(3) {
+  width: 68%;
+}
+
+@keyframes sys-skeleton {
+  from {
+    background-position: 100% 50%;
+  }
+  to {
+    background-position: 0 50%;
+  }
+}
+
+@keyframes sys-border-flow {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 220% 50%;
+  }
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sys-text);
+}
+
+.card-title .muted {
+  font-weight: 400;
+}
+
+.muted {
+  font-size: 12px;
+  color: var(--sys-text-muted);
+}
+
+.sub-text {
+  font-size: 13px;
+  color: var(--sys-text-sub);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* ---------- 统计卡片 ---------- */
+.stat-card {
+  position: relative;
+  background: var(--sys-card);
+  border: 1px solid var(--sys-border);
+  border-radius: var(--sys-radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  transition: transform 0.3s var(--sys-ease), border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--sys-primary), var(--sys-cyan));
+  opacity: 0.85;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 12px 28px rgba(59, 130, 246, 0.12);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--sys-text-sub);
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--sys-text);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-value.accent {
+  color: var(--sys-cyan);
+}
+
+.stat-hint {
+  font-size: 12px;
+  color: var(--sys-text-muted);
+}
+
+/* ---------- 顶部横幅 ---------- */
+.hero-banner {
+  position: relative;
+  border-radius: var(--sys-radius-lg);
+  padding: 18px 22px;
+  color: #fff;
+  background: linear-gradient(120deg, rgba(37, 99, 235, 0.9) 0%, rgba(6, 182, 212, 0.85) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.24);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  overflow: hidden;
+}
+
+/* 横幅上的斜向光带，弱化的登录页按钮质感延续 */
+.hero-banner::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -30%;
+  width: 30%;
+  height: 180%;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: sys-shine 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero-banner .hero-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.hero-banner .hero-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+@keyframes sys-shine {
+  0% {
+    left: -30%;
+  }
+  45%,
+  100% {
+    left: 120%;
+  }
+}
+
+.section-tip {
+  font-size: 12px;
+  color: var(--sys-text-muted);
+  line-height: 1.7;
+}
+
+/* =========================================================
+   路由切换动效：淡入 + 轻微上移
+   ========================================================= */
+.sys-page-enter-active {
+  animation: sys-page-in 400ms var(--sys-ease) both;
+}
+
+@keyframes sys-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   空状态
+   ========================================================= */
+.sys-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 34px 16px;
+  text-align: center;
+}
+
+.sys-empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sys-cyan);
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.18), transparent 70%);
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+}
+
+.sys-empty-text {
+  font-size: 13px;
+  color: var(--sys-text-sub);
+}
+
+.sys-empty-hint {
+  font-size: 12px;
+  color: var(--sys-text-muted);
+}
+
+/* =========================================================
+   Element Plus 视觉微调（浅色适配）
+   ========================================================= */
+.el-table {
+  --el-table-border-color: #f3f4f6;
+  --el-table-header-bg-color: #f9fafb;
+  --el-table-tr-bg-color: transparent;
+  --el-table-row-hover-bg-color: rgba(59, 130, 246, 0.06);
+  --el-table-bg-color: transparent;
+  --el-table-expanded-cell-bg-color: transparent;
+  font-size: 13px;
+  background: transparent;
+}
+
+.el-table th.el-table__cell {
+  background: #f9fafb !important;
+  color: var(--sys-text-sub);
+  font-weight: 600;
+}
+
+.el-table td.el-table__cell,
+.el-table th.el-table__cell.is-leaf {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.el-table tbody tr {
+  transition: background 0.18s ease;
+}
+
+.el-table .cell {
+  line-height: 1.6;
+}
+
+.el-table__inner-wrapper::before {
+  background-color: transparent;
+}
+
+.el-card {
+  border-radius: var(--sys-radius-lg);
+  background: var(--sys-card);
+  border-color: var(--sys-border);
+}
+
+.el-tag {
+  border-radius: 6px;
+}
+
+.el-button--primary {
+  --el-button-bg-color: #3b82f6;
+  --el-button-border-color: #3b82f6;
+  --el-button-hover-bg-color: #2563eb;
+  --el-button-hover-border-color: #2563eb;
+}
+
+.el-alert {
+  border-radius: var(--sys-radius-sm);
+}
+
+.el-empty {
+  padding: 28px 0;
+}
+
+.el-dialog,
+.el-message-box {
+  border-radius: var(--sys-radius-lg);
+  background: var(--sys-panel);
+  border: 1px solid var(--sys-border);
+}
+
+.el-message {
+  border-radius: var(--sys-radius-sm);
+}
+
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select__wrapper {
+  border-radius: var(--sys-radius-sm);
+  box-shadow: inset 0 0 0 1px var(--sys-border);
+  background: #ffffff;
+}
+
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused {
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.9), var(--sys-glow);
+}
+
+/* 骨架屏背景对齐浅色 */
+.el-skeleton {
+  --el-skeleton-color: #f3f4f6;
+  --el-skeleton-to-color: #e5e7eb;
+}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.28);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* =========================================================
+   无障碍：尊重系统「减少动态效果」设置
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .hero-banner::after,
+  .sys-card--flow::after,
+  .sys-page-enter-active {
+    animation: none;
+  }
+
+  .card:hover,
+  .stat-card:hover {
+    transform: none;
+  }
+}

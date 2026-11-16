@@ -1,0 +1,18 @@
+# 编译产物
+*.class
+target/
+build/
+out/
+
+# 依赖和前端产物
+node_modules/
+dist/
+
+# IDE 和系统文件
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# 日志
+*.log

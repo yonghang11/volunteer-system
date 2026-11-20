@@ -394,6 +394,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Refresh } from '@element-plus/icons-vue'
 import MentorPicker from '@/components/MentorPicker.vue'
@@ -416,6 +417,7 @@ import {
 } from '@/utils/format'
 
 const userStore = useUserStore()
+const route = useRoute()
 
 const loading = ref(false)
 const activeTab = ref('confirm')
@@ -601,7 +603,12 @@ async function submitObjectionAction() {
   }
 }
 
-onMounted(loadAll)
+onMounted(() => {
+  loadAll()
+  if (route.query.tab) {
+    activeTab.value = String(route.query.tab)
+  }
+})
 </script>
 
 <style scoped>

@@ -33,6 +33,23 @@
       </el-button>
     </div>
 
+    <div v-if="openSupplementRound && currentStage && currentStage.code === 'SUPPLEMENT'" class="hero-banner supplement-banner">
+      <div>
+        <div class="hero-title">第 {{ openSupplementRound }} 轮补录进行中</div>
+        <div class="hero-sub">
+          第 {{ openSupplementRound }} 轮补录已开启，可重新填报导师意向（最多 3 个）
+          <template v-if="supplementRoundEnd">· 截止 {{ supplementRoundEnd }}</template>
+        </div>
+      </div>
+      <el-button
+        type="primary"
+        class="sys-btn-primary"
+        @click="go('/student/result?tab=supplement')"
+      >
+        前往第 {{ openSupplementRound }} 轮补录填报
+      </el-button>
+    </div>
+
     <div class="card sys-card--flow">
       <div class="card-title">
         <span>选拔流程</span>
@@ -206,6 +223,7 @@ const stage = useStageStore()
 
 const loading = ref(false)
 const stages = ref([])
+const rounds = ref([])
 const myIntent = ref(null)
 const offersData = ref({ offers: [], canConfirm: false, confirmDeadline: null })
 const interviews = ref([])
@@ -303,15 +321,26 @@ async function loadStages() {
 
 async function loadRound() {
   try {
-    const rounds = (await fetchSupplementRounds()) || []
-    const openRounds = rounds.filter((item) => item.openFlag === 1)
+    rounds.value = (await fetchSupplementRounds()) || []
+    const openRounds = rounds.value.filter((item) => item.openFlag === 1)
     if (openRounds.length) {
       currentRound.value = Math.max(...openRounds.map((item) => item.roundNo))
     }
   } catch (e) {
+    rounds.value = []
     currentRound.value = 1
   }
 }
+
+const openSupplementRound = computed(() => {
+  const open = rounds.value.find((r) => r.openFlag === 1)
+  return open ? open.roundNo : null
+})
+
+const supplementRoundEnd = computed(() => {
+  const open = rounds.value.find((r) => r.openFlag === 1)
+  return open ? open.endTime : null
+})
 
 async function loadAll() {
   loading.value = true

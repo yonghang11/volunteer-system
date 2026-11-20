@@ -271,9 +271,9 @@ baseURL: import.meta.env.VITE_API_BASE_URL || '/api'
 ```
 
 - 本地开发：无该变量 → `/api` → Vite 代理转发到 `localhost:8080`
-- 生产构建：读 `.env.production` → `http://47.93.228.116/api`
+- 生产构建：读 `.env.production` → `/api` → 由 Nginx 反代到 `127.0.0.1:8080`
 
-> 若改为完全走 Nginx 反代（更推荐，避免 IP 写死），把 `.env.production` 的值改成 `/api` 后重新 `npm run build` 即可。
+> 生产环境不写死 IP：前端只发同源 `/api` 请求，服务器 IP 或域名变更时**无需重新打包**。
 
 ### 6.6 上线验收清单
 

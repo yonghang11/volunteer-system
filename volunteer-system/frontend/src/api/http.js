@@ -5,7 +5,7 @@ export const TOKEN_KEY = 'vs_token'
 export const USER_KEY = 'vs_user'
 
 const service = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 30000
 })
 

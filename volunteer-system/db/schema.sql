@@ -1,7 +1,7 @@
 -- 学生实训室选组选拔系统 建库脚本（MySQL 8.0）
-DROP DATABASE IF EXISTS volunteer_system;
-CREATE DATABASE volunteer_system DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE volunteer_system;
+DROP DATABASE IF EXISTS zytbxt;
+CREATE DATABASE zytbxt DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE zytbxt;
 
 -- 用户（学生/导师/实训室管理员/学院管理员）
 CREATE TABLE sys_user (

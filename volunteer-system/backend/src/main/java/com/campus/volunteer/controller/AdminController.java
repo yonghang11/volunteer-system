@@ -39,6 +39,12 @@ public class AdminController {
         return R.ok(stageService.advance());
     }
 
+    /** 演示用：重置到意向填报阶段（仅学院管理员） */
+    @PostMapping("/stage/reset-intent")
+    public R<Map<String, Object>> resetIntent() {
+        return R.ok(stageService.resetToIntent());
+    }
+
     /** 全站统计概览 */
     @GetMapping("/overview")
     public R<Map<String, Object>> overview() {

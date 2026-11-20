@@ -66,6 +66,7 @@ export const fetchAuditLogs = () => get('/admin/audit')
 export const updateStage = (code, payload) =>
   put(`/admin/stage/${code}`, payload)
 export const advanceStage = () => post('/admin/stage/advance')
+export const resetStageToIntent = () => post('/admin/stage/reset-intent')
 
 /* ---------- 个人简介 ---------- */
 export const fetchBio = () => get('/bio')

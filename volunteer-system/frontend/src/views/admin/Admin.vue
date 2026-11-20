@@ -14,7 +14,10 @@
         <div class="card sys-card--flow">
           <div class="card-title">
             <span>8 个环节时间窗</span>
-            <el-button type="primary" class="sys-btn-primary" @click="handleAdvance">一键推进到下一环节</el-button>
+            <div>
+              <el-button style="margin-right: 8px" @click="handleResetIntent">重置到意向填报</el-button>
+              <el-button type="primary" class="sys-btn-primary" @click="handleAdvance">一键推进到下一环节</el-button>
+            </div>
           </div>
           <el-alert
             type="info"
@@ -463,6 +466,7 @@ import {
   openSupplementRound,
   publishPublicList,
   refuseTransfer,
+  resetStageToIntent,
   updateStage
 } from '@/api'
 import {
@@ -636,6 +640,26 @@ async function handleAdvance() {
   try {
     const data = await advanceStage()
     ElMessage.success(`已推进至：第 ${data.no} 环节 · ${data.name}`)
+    await loadStages()
+    stageStore.fetchCurrent()
+  } catch (e) {
+    /* 错误提示由响应拦截器处理 */
+  }
+}
+
+async function handleResetIntent() {
+  try {
+    await ElMessageBox.confirm(
+      '将把全部环节时间窗整体平移到「意向填报」阶段，仅调整时间、不影响已有数据，是否继续？',
+      '重置到意向填报',
+      { type: 'warning', confirmButtonText: '立即重置', cancelButtonText: '取消' }
+    )
+  } catch (e) {
+    return
+  }
+  try {
+    const data = await resetStageToIntent()
+    ElMessage.success(`已重置：第 ${data.no} 环节 · ${data.name} 进行中`)
     await loadStages()
     stageStore.fetchCurrent()
   } catch (e) {

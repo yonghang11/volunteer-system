@@ -188,4 +188,32 @@ public class StageService {
                 "结束环节 " + current.getStageCode() + (next == null ? "（已到最后一个环节）" : "，开启 " + next.getStageCode()));
         return current();
     }
+
+    /** 演示用：整体平移全部时间窗，使「意向填报」重新处于开放状态 */
+    @Transactional
+    public Map<String, Object> resetToIntent() {
+        com.campus.volunteer.common.CurrentUser.requireRole(Const.Role.COLLEGE_ADMIN);
+        StageWindow intent = window(Const.Stage.INTENT);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime newStart = now.minusMinutes(1);
+        Duration delta = Duration.between(intent.getStartTime(), newStart);
+
+        for (StageWindow window : all()) {
+            window.setStartTime(window.getStartTime().plus(delta));
+            window.setEndTime(window.getEndTime().plus(delta));
+            stageWindowMapper.updateById(window);
+        }
+
+        // 确保重置后意向填报至少还有 2 小时可填报
+        StageWindow shifted = window(Const.Stage.INTENT);
+        LocalDateTime minEnd = now.plusHours(2);
+        if (shifted.getEndTime().isBefore(minEnd)) {
+            shifted.setEndTime(minEnd);
+            stageWindowMapper.updateById(shifted);
+        }
+
+        auditService.log("STAGE_DEMO_RESET", Const.Stage.INTENT,
+                "演示重置：全部时间窗平移 " + delta.toMinutes() + " 分钟，意向填报已开放");
+        return current();
+    }
 }
